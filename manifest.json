@@ -1,0 +1,27 @@
+{
+  "manifest_version": 2,
+  "name": "Comic Sams",
+  "description": "Replaces every font in your browser with a rainbow comic sans, as well as every image with a gif of nyan cat.",
+  "version": "2.1",
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
+  "browser_action": {
+    "default_icon": "icon128.png",
+    "default_popup": "options.html"
+  },
+  "options_page": "options.html",
+  "permissions": [
+    "storage",
+    "tabs"
+  ],
+  "background": {
+    "scripts": ["jquery-3.3.1.min.js", "background.js"]
+  },
+  "content_scripts": [{
+    "matches": ["http://*/*", "https://*/*"],
+    "js": ["jquery-3.3.1.min.js", "changes.js"]
+  }]
+}

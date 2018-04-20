@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Comic Sams Options</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+
+<body>
+  <h1>Comic Sams Options</h1>
+  <div class="container">
+    <input type="checkbox" name="font" id="font" value="fontStatus" checked>Change Fonts to Comic Sans MT</input><br>
+    <input type="checkbox" name="fontColor" id="fontColor" value="fontColorStatus" checked>Change Font Colors Randomly</input><br>
+    <input type="checkbox" name="nyan" id="nyan" value="nyanStatus" checked>Change Images to Nyan Cat</input><br>
+    <input type="checkbox" name="background" id="background" value="backgroundStatus" checked>Change Background Color Randomly</input><br>
+  </div>
+  <div class="container" id="buttons">
+    <input type="submit" id="submitButton" value="Submit"></input><br>
+    <input type="submit" id="resetButton" value="Reset"></input><br>
+    <input type="submit" id="enableButton" value="Disable"></input>
+    <p id="submitStatus"></p>
+  </div>
+  <script type="text/javascript" src="jquery-3.3.1.min.js"></script>
+  <script type="text/javascript" src="options.js"></script>
+  <script type="text/javascript" src="styles.js"></script>
+</body>
+
+</html>
