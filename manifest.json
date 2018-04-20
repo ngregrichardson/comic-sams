@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Comic Sams",
-  "description": "Replaces all fonts in your browser with an alternating rainbow Comic Sans MT font, as well as every image with a gif of nyan cat and alternating background colors.",
+  "description": "Replaces all fonts in your browser with rainbow Comic Sans, as well as every image with nyan cat and changing background colors.",
   "version": "2.2",
   "icons": {
     "16": "icon16.png",
