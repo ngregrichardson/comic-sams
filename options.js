@@ -38,89 +38,103 @@ $(function() {
   });
 
   $('#submitButton').click(function() {
-    $('#submitStatus').text('Working...');
+    chrome.storage.sync.get('state', function(status) {
+      if (status.state == true) {
+        $('#submitStatus').text('Working...');
 
-    var fontStatus = $('#font').prop("checked");
-    var fontColorStatus = $('#fontColor').prop("checked");
-    var nyanStatus = $('#nyan').prop("checked");
-    var backgroundStatus = $('#background').prop("checked");
+        var fontStatus = $('#font').prop("checked");
+        var fontColorStatus = $('#fontColor').prop("checked");
+        var nyanStatus = $('#nyan').prop("checked");
+        var backgroundStatus = $('#background').prop("checked");
 
-    if (fontStatus == undefined) {
-      chrome.storage.sync.set({
-        'fontStatus': defaultFontStatus
-      });
-    } else {
-      chrome.storage.sync.set({
-        'fontStatus': fontStatus
-      });
-    }
+        if (fontStatus == undefined) {
+          chrome.storage.sync.set({
+            'fontStatus': defaultFontStatus
+          });
+        } else {
+          chrome.storage.sync.set({
+            'fontStatus': fontStatus
+          });
+        }
 
-    if (fontColorStatus == undefined) {
-      chrome.storage.sync.set({
-        'fontColorStatus': defaultFontColorStatus
-      });
-    } else {
-      chrome.storage.sync.set({
-        'fontColorStatus': fontColorStatus
-      });
-    }
+        if (fontColorStatus == undefined) {
+          chrome.storage.sync.set({
+            'fontColorStatus': defaultFontColorStatus
+          });
+        } else {
+          chrome.storage.sync.set({
+            'fontColorStatus': fontColorStatus
+          });
+        }
 
-    if (nyanStatus == undefined) {
-      chrome.storage.sync.set({
-        'nyanStatus': defaultNyanStatus
-      });
-    } else {
-      chrome.storage.sync.set({
-        'nyanStatus': nyanStatus
-      });
-    }
+        if (nyanStatus == undefined) {
+          chrome.storage.sync.set({
+            'nyanStatus': defaultNyanStatus
+          });
+        } else {
+          chrome.storage.sync.set({
+            'nyanStatus': nyanStatus
+          });
+        }
 
-    if (backgroundStatus == undefined) {
-      chrome.storage.sync.set({
-        'backgroundStatus': defaultBackgroundStatus
-      });
-    } else {
-      chrome.storage.sync.set({
-        'backgroundStatus': backgroundStatus
-      });
-    }
+        if (backgroundStatus == undefined) {
+          chrome.storage.sync.set({
+            'backgroundStatus': defaultBackgroundStatus
+          });
+        } else {
+          chrome.storage.sync.set({
+            'backgroundStatus': backgroundStatus
+          });
+        }
 
-    $('#submitStatus').text('Changes saved!');
-
-    chrome.tabs.reload();
+        $('#submitStatus').text('Changes saved!');
+        if (!window.location.href.includes("chrome-extension://")) {
+          chrome.tabs.reload();
+        }
+      } else {
+        $('#submitStatus').text('Enable to change settings!');
+      }
+    });
   });
 
   $('#resetButton').click(function() {
-    $('#submitStatus').text('Working...');
+    chrome.storage.sync.get('state', function(status) {
+      if (status.state == true) {
+        $('#submitStatus').text('Working...');
 
-    chrome.storage.sync.set({
-      'fontStatus': defaultFontStatus
-    });
-    chrome.storage.sync.set({
-      'fontColorStatus': defaultFontColorStatus
-    });
-    chrome.storage.sync.set({
-      'nyanStatus': defaultNyanStatus
-    });
-    chrome.storage.sync.set({
-      'backgroundStatus': defaultBackgroundStatus
-    });
+        chrome.storage.sync.set({
+          'fontStatus': defaultFontStatus
+        });
+        chrome.storage.sync.set({
+          'fontColorStatus': defaultFontColorStatus
+        });
+        chrome.storage.sync.set({
+          'nyanStatus': defaultNyanStatus
+        });
+        chrome.storage.sync.set({
+          'backgroundStatus': defaultBackgroundStatus
+        });
 
-    chrome.storage.sync.get(['fontStatus', 'fontColorStatus', 'nyanStatus', 'backgroundStatus'], function(status) {
-      $('#font').prop("checked", status.fontStatus);
-      $('#fontColor').prop("checked", status.fontColorStatus);
-      $('#nyan').prop("checked", status.nyanStatus);
-      $('#background').prop("checked", status.backgroundStatus);
-    });
+        chrome.storage.sync.get(['fontStatus', 'fontColorStatus', 'nyanStatus', 'backgroundStatus'], function(status) {
+          $('#font').prop("checked", status.fontStatus);
+          $('#fontColor').prop("checked", status.fontColorStatus);
+          $('#nyan').prop("checked", status.nyanStatus);
+          $('#background').prop("checked", status.backgroundStatus);
+        });
 
-    $('#submitStatus').text('Changes saved!');
-    chrome.tabs.reload();
+        $('#submitStatus').text('Changes saved!');
+        if (!window.location.href.includes("chrome-extension://")) {
+          chrome.tabs.reload();
+        }
+      } else {
+        $('#submitStatus').text('Enable to change settings!');
+      }
+    });
   });
 
   $('#enableButton').click(function() {
-    $('#submitStatus').text('Working...');
-
     chrome.storage.sync.get('state', function(state) {
+      $('#submitStatus').text('Working...');
       if (state.state == true) {
         chrome.storage.sync.set({
           'fontStatus': !defaultFontStatus
@@ -134,14 +148,15 @@ $(function() {
         chrome.storage.sync.set({
           'backgroundStatus': !defaultBackgroundStatus
         });
-
         chrome.storage.sync.set({
           'state': !defaultState
         });
 
         $('#enableButton').val('Enable');
         $('#submitStatus').text('Disabled :(');
-        chrome.tabs.reload();
+        if (!window.location.href.includes("chrome-extension://")) {
+          chrome.tabs.reload();
+        }
       } else {
         chrome.storage.sync.set({
           'fontStatus': $('#font').prop("checked")
@@ -162,7 +177,9 @@ $(function() {
 
         $('#enableButton').val('Disable');
         $('#submitStatus').text('Enabled!');
-        chrome.tabs.reload();
+        if (!window.location.href.includes("chrome-extension://")) {
+          chrome.tabs.reload();
+        }
       }
     });
   });
