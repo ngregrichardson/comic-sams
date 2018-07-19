@@ -13,43 +13,66 @@ var cite = document.getElementsByTagName('cite');
 var span = document.getElementsByTagName('span');
 var img = document.getElementsByTagName('img');
 var button = document.getElementsByTagName('button');
-var gifs = ["https://i.imgur.com/a7ePlJ1.gif", "https://i.imgur.com/Bf4KXZM.gif", "https://i.imgur.com/Ng0eD79.gif", "https://i.imgur.com/CwQYMZo.gif", "https://i.imgur.com/SNB8kiM.gif", "https://i.imgur.com/0lvAY7w.gif", "https://i.imgur.com/mxR7PJk.gif", "https://i.giphy.com/media/KqzoMxBSJwUdG/giphy.webp", "https://i.giphy.com/media/v4f7aVLX1EoAU/giphy.webp", "https://i.giphy.com/media/QjSoXOQIcEXBu/giphy.webp", "https://media3.giphy.com/media/mtaWx98w7mX7y/200w.webp", "https://i.giphy.com/media/RbE9Wj1DX19hS/200w.webp", "https://i.giphy.com/media/BcZZaMtMBmakw/200w.webp", "https://media3.giphy.com/media/zNkt0TcuakSuA/200w.webp", "https://i.giphy.com/media/XabhIre57HUM8/200w.webp", "https://media1.giphy.com/media/4tITB4dfHrOgw/giphy.gif"];
+var gifs = [];
+var searchTag;
+var limit = 250;
+var url;
 var fontStatus;
 var fontColorStatus;
 var nyanStatus;
 var backgroundStatus;
+var state;
+var xhr;
+var imageData;
+var response = 0;
 
-chrome.storage.sync.get(['fontStatus', 'fontColorStatus', 'nyanStatus', 'backgroundStatus'], function(status) {
+chrome.storage.sync.get(['fontStatus', 'fontColorStatus', 'nyanStatus', 'backgroundStatus', 'searchTag', 'state'], function(status) {
   fontStatus = status.fontStatus;
   fontColorStatus = status.fontColorStatus;
   nyanStatus = status.nyanStatus;
   backgroundStatus = status.backgroundStatus;
-  console.log("font status is " + fontStatus);
+  searchTag = status.searchTag;
+  state = status.state;
 });
 
 $(function() {
-  run();
-  setInterval(function() {
+  url = 'https://api.giphy.com/v1/gifs/search?q=' + searchTag + '&api_key=NChfgHwB35TjflSoAYO3NY1O8u21pJKI&limit=' + limit;
+  $.getJSON(url, function(data) {
+    response = data;
+    for (var i = 0; i < response.data.length; i++) {
+      gifs[i] = "https://i.giphy.com/media/" + response.data[i].id + "/giphy.webp";
+    }
+  });
+
+  if (state) {
     run();
-  }, 1000);
-
-  if (backgroundStatus == true) {
-
-    for (i = 0, l = div.length; i < l; i++) {
-      if (div[i].className.includes("container") || div[i].className.includes("content")) {
-        runDiv(i);
-      }
-    }
-
-    for (i = 0, l = button.length; i < l; i++) {
-      runButton(i);
-    }
+    runNyan();
 
     setInterval(function() {
-      document.querySelector('body').style.background = randomColors();
+      run();
     }, 100);
-  }
 
+    setInterval(function() {
+      runNyan();
+    }, 1000);
+
+    if (backgroundStatus == true) {
+
+      for (i = 0, l = div.length; i < l; i++) {
+        if (div[i].className.includes("container") || div[i].className.includes("content")) {
+          runDiv(i);
+        }
+      }
+
+      for (i = 0, l = button.length; i < l; i++) {
+        runButton(i);
+      }
+
+      setInterval(function() {
+        document.querySelector('body').style.background = randomColors();
+      }, 100);
+    }
+  }
 });
 
 function randomColors() {
@@ -57,7 +80,7 @@ function randomColors() {
 }
 
 function randomGif() {
-  return gifs[Math.floor(Math.random() * gifs.length)];
+  return gifs[Math.floor(Math.random() * limit - 1)];
 }
 
 function runDiv(i) {
@@ -188,7 +211,9 @@ function run() {
       button[i].style.color = randomColors();
     }
   }
+}
 
+function runNyan() {
   if (nyanStatus == true) {
     for (var i = 0, l = img.length; i < l; i++) {
       img[i].src = randomGif();

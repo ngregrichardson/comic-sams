@@ -12,6 +12,11 @@ h1 {
   margin: 60px;
 }
 
+h5 {
+  padding: 0px;
+  margin: 0px;
+}
+
 .container {
   display: block;
   padding: 5px;
@@ -23,7 +28,7 @@ h1 {
   margin: 7px;
 }
 
-#submitButton, #resetButton, #enableButton {
+#submitButton, #resetButton, #enableButton, #searchTag {
   background-color: transparent;
   font-family: "Comic Sans MS", cursive, sans-serif;
   font-size: 25px;
@@ -38,6 +43,21 @@ h1 {
   height: 5%;
 }
 
+#texts {
+  padding: 7px;
+}
+
+#searchTag {
+  margin: 0px;
+  padding: 0px;
+  text-align: center;
+  text-transform: lowercase;
+}
+
+#searchTag::placeholder {
+  color: white;
+}
+
 #submitStatus {
   font-size: 15px;
 }
@@ -45,29 +65,31 @@ h1 {
 @media only screen and (max-width: 600px) {
   body {
     font-size: 10px;
-      text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
+    text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
   }
-
   h1 {
     text-align: left;
     margin-top: 20px;
     margin-bottom: 20px;
     font-size: 25px;
   }
-
+  h5 {
+    font-size: 13px;
+  }
   .container {
     display: block;
     text-align: left;
   }
-
-  #buttons {
+  #buttons, #texts {
     text-align: center;
   }
-
-  #submitButton, #resetButton, #enableButton {
+  #submitButton, #resetButton, #enableButton, #searchTag {
     text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
     font-size: 10px;
-    width:65%;
+    width: 65%;
     height: 2.5%;
+  }
+  #searchTag {
+    font-size: 15px;
   }
 }
