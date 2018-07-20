@@ -15,7 +15,7 @@ var img = document.getElementsByTagName('img');
 var button = document.getElementsByTagName('button');
 var gifs = [];
 var searchTag;
-var limit = 250;
+var limit = 300;
 var url;
 var fontStatus;
 var fontColorStatus;
@@ -36,25 +36,23 @@ chrome.storage.sync.get(['fontStatus', 'fontColorStatus', 'nyanStatus', 'backgro
 });
 
 $(function() {
-  url = 'https://api.giphy.com/v1/gifs/search?q=' + searchTag + '&api_key=NChfgHwB35TjflSoAYO3NY1O8u21pJKI&limit=' + limit;
-  $.getJSON(url, function(data) {
-    response = data;
-    for (var i = 0; i < response.data.length; i++) {
-      gifs[i] = "https://i.giphy.com/media/" + response.data[i].id + "/giphy.webp";
-    }
-  });
-
   if (state) {
+    url = 'https://api.giphy.com/v1/gifs/search?q=' + searchTag + '&api_key=NChfgHwB35TjflSoAYO3NY1O8u21pJKI&limit=' + limit;
+    $.getJSON(url, function(data) {
+      response = data;
+      for (var i = 0; i < response.data.length; i++) {
+        gifs[i] = "https://i.giphy.com/media/" + response.data[i].id + "/giphy.webp";
+      }
+      runNyan();
+      setInterval(function() {
+        runNyan();
+      }, 1700);
+    });
     run();
-    runNyan();
 
     setInterval(function() {
       run();
     }, 100);
-
-    setInterval(function() {
-      runNyan();
-    }, 1000);
 
     if (backgroundStatus == true) {
 

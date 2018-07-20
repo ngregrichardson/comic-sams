@@ -1,8 +1,7 @@
  var defaultFontStatus = true;
  var defaultFontColorStatus = true;
  var defaultNyanStatus = true;
- var defaultBackgroundStatus = false;
- var defaultSearchVal = "Nyan Cat";
+ var defaultBackgroundStatus = true;
  var defaultSearchTag = "nyan+cat";
  var defaultState = true;
  var defaultStartup = true;
@@ -37,7 +36,7 @@
        $('#background').prop("checked", status.backgroundStatus);
      }
      if (status.searchTag == undefined) {
-       $('#searchTag').val(defaultSearchVal);
+       $('#searchTag').val(defaultSearchTag.replace("+", " "));
      } else {
        $('#searchTag').val(status.searchTag.replace("+", " "));
      }
@@ -105,7 +104,14 @@
          }
 
          $('#submitStatus').text('Changes saved!');
-         chrome.tabs.reload();
+         chrome.tabs.query({
+           "highlighted": true,
+           "currentWindow": true
+         }, function(tabs) {
+           if (!tabs[0].url.includes("chrome-extension://")) {
+             chrome.tabs.reload(tabs[0].id);
+           }
+         });
        } else {
          $('#submitStatus').text('Enable to change settings!');
        }
@@ -138,11 +144,18 @@
            $('#fontColor').prop("checked", status.fontColorStatus);
            $('#nyan').prop("checked", status.nyanStatus);
            $('#background').prop("checked", status.backgroundStatus);
-           $('#searchTag').val(status.searchTag);
+           $('#searchTag').val(status.searchTag.replace("+", " "));
          });
 
          $('#submitStatus').text('Changes saved!');
-         chrome.tabs.reload();
+         chrome.tabs.query({
+           "highlighted": true,
+           "currentWindow": true
+         }, function(tabs) {
+           if (!tabs[0].url.includes("chrome-extension://")) {
+             chrome.tabs.reload(tabs[0].id);
+           }
+         });
        } else {
          $('#submitStatus').text('Enable to change settings!');
        }
@@ -157,10 +170,18 @@
            'state': !defaultState
          });
 
+         $('#searchTag').prop("disabled", true);
          $('#searchTag').css("opacity", "0.5");
          $('#enableButton').val('Enable');
          $('#submitStatus').text('Disabled :(');
-         chrome.tabs.reload();
+         chrome.tabs.query({
+           "highlighted": true,
+           "currentWindow": true
+         }, function(tabs) {
+           if (!tabs[0].url.includes("chrome-extension://")) {
+             chrome.tabs.reload(tabs[0].id);
+           }
+         });
        } else {
          chrome.storage.sync.set({
            'fontStatus': $('#font').prop("checked")
@@ -182,10 +203,18 @@
            'state': defaultState
          });
 
+         $('#searchTag').prop("disabled", false);
          $('#searchTag').css("opacity", "1");
          $('#enableButton').val('Disable');
          $('#submitStatus').text('Enabled!');
-         chrome.tabs.reload();
+         chrome.tabs.query({
+           "highlighted": true,
+           "currentWindow": true
+         }, function(tabs) {
+           if (!tabs[0].url.includes("chrome-extension://")) {
+             chrome.tabs.reload(tabs[0].id);
+           }
+         });
        }
      });
    });

@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Comic Sams",
   "description": "Replaces all fonts in your browser with rainbow Comic Sans, as well as every image with nyan cat and changing background colors.",
-  "version": "3.0",
+  "version": "3.1",
   "icons": {
     "16": "icon16.png",
     "48": "icon48.png",
