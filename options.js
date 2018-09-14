@@ -1,6 +1,7 @@
  var defaultFontStatus = true;
  var defaultFontColorStatus = true;
- var defaultNyanStatus = true;
+ var defaultSpinStatus = true;
+ var defaultGifStatus = true;
  var defaultBackgroundStatus = true;
  var defaultSearchTag = "nyan+cat";
  var defaultState = true;
@@ -21,7 +22,7 @@
      }
    });
 
-   chrome.storage.sync.get(['fontStatus', 'fontColorStatus', 'nyanStatus', 'backgroundStatus', 'searchTag', 'state'], function(status) {
+   chrome.storage.sync.get(['fontStatus', 'fontColorStatus', 'spinStatus', 'gifStatus', 'backgroundStatus', 'searchTag', 'state'], function(status) {
      if (status.state == true || status.state == undefined) {
        $('#enableButton').val('Disable');
      } else {
@@ -29,7 +30,8 @@
      }
      $('#font').prop("checked", status.fontStatus);
      $('#fontColor').prop("checked", status.fontColorStatus);
-     $('#nyan').prop("checked", status.nyanStatus);
+     $('#spin').prop("checked", status.spinStatus);
+     $('#gif').prop("checked", status.gifStatus);
      if (status.backgroundStatus == undefined) {
        $('#background').prop("checked", defaultBackgroundStatus);
      } else {
@@ -49,7 +51,8 @@
 
          var fontStatus = $('#font').prop("checked");
          var fontColorStatus = $('#fontColor').prop("checked");
-         var nyanStatus = $('#nyan').prop("checked");
+         var spinStatus = $('#spin').prop("checked");
+         var gifStatus = $('#gif').prop("checked");
          var backgroundStatus = $('#background').prop("checked");
          var searchTag = $('#searchTag').val().replace(" ", "+");
 
@@ -73,13 +76,23 @@
            });
          }
 
-         if (nyanStatus == undefined) {
+         if(spinStatus == undefined) {
            chrome.storage.sync.set({
-             'nyanStatus': defaultNyanStatus
+             'spinStatus': defaultsSpinStatus
+           });
+         }else {
+           chrome.storage.sync.set({
+             'spinStatus': spinStatus
+           });
+         }
+
+         if (gifStatus == undefined) {
+           chrome.storage.sync.set({
+             'gifStatus': defaultGifStatus
            });
          } else {
            chrome.storage.sync.set({
-             'nyanStatus': nyanStatus
+             'gifStatus': gifStatus
            });
          }
 
@@ -130,7 +143,10 @@
            'fontColorStatus': defaultFontColorStatus
          });
          chrome.storage.sync.set({
-           'nyanStatus': defaultNyanStatus
+           'spinStatus': defaultSpinStatus
+         });
+         chrome.storage.sync.set({
+           'gifStatus': defaultGifStatus
          });
          chrome.storage.sync.set({
            'backgroundStatus': defaultBackgroundStatus
@@ -139,10 +155,11 @@
            'searchTag': defaultSearchTag
          });
 
-         chrome.storage.sync.get(['fontStatus', 'fontColorStatus', 'nyanStatus', 'searchTag', 'backgroundStatus'], function(status) {
+         chrome.storage.sync.get(['fontStatus', 'fontColorStatus', 'spinStatus', 'gifStatus', 'searchTag', 'backgroundStatus'], function(status) {
            $('#font').prop("checked", status.fontStatus);
            $('#fontColor').prop("checked", status.fontColorStatus);
-           $('#nyan').prop("checked", status.nyanStatus);
+           $('#gif').prop("checked", status.gifStatus);
+           $('#spin').prop("checked", status.spinStatus);
            $('#background').prop("checked", status.backgroundStatus);
            $('#searchTag').val(status.searchTag.replace("+", " "));
          });
@@ -170,6 +187,11 @@
            'state': !defaultState
          });
 
+         $('#font').prop("disabled", true);
+         $('#fontColor').prop("disabled", true);
+         $('#gif').prop("disabled", true);
+         $('#spin').prop("disabled", true);
+         $('#background').prop("disabled", true);
          $('#searchTag').prop("disabled", true);
          $('#searchTag').css("opacity", "0.5");
          $('#enableButton').val('Enable');
@@ -190,7 +212,7 @@
            'fontColorStatus': $('#fontColor').prop("checked")
          });
          chrome.storage.sync.set({
-           'nyanStatus': $('#nyan').prop("checked")
+           'gifStatus': $('#gif').prop("checked")
          });
          chrome.storage.sync.set({
            'backgroundStatus': $('#background').prop("checked")
@@ -203,6 +225,11 @@
            'state': defaultState
          });
 
+         $('#font').prop("disabled", false);
+         $('#fontColor').prop("disabled", false);
+         $('#gif').prop("disabled", false);
+         $('#spin').prop("disabled", false);
+         $('#background').prop("disabled", false);
          $('#searchTag').prop("disabled", false);
          $('#searchTag').css("opacity", "1");
          $('#enableButton').val('Disable');
@@ -228,7 +255,10 @@
      'fontColorStatus': defaultFontColorStatus
    });
    chrome.storage.sync.set({
-     'nyanStatus': defaultNyanStatus
+     'gifStatus': defaultGifStatus
+   });
+   chrome.storage.sync.set({
+     'spinStatus': defaultSpinStatus
    });
    chrome.storage.sync.set({
      'backgroundStatus': defaultBackgroundStatus
