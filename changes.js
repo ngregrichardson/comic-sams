@@ -14,6 +14,7 @@ var cite = document.getElementsByTagName('cite');
 var span = document.getElementsByTagName('span');
 var img = document.getElementsByTagName('img');
 var button = document.getElementsByTagName('button');
+var input = document.getElementsByTagName('input');
 
 /* Options Variables */
 var fontStatus;
@@ -132,6 +133,7 @@ function runFont() {
   runText(cite);
   runText(span);
   runText(button);
+  runText(input);
 }
 
 /* Font Color Function*/
