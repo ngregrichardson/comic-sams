@@ -1,11 +1,13 @@
 body {
   font-family: "Comic Sans MS", cursive, sans-serif;
   color: white;
-  text-shadow: -2px -2px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
+  text-shadow: -2px -2px 0 black, 1px -1px 0 black, -1px 1px 0 black,
+    1px 1px 0 black;
   width: 100%;
   height: 100%;
   font-size: 25px;
-  transition: background 0.5s ease;
+  transition: background 1s ease;
+  margin: 0px;
 }
 
 h1 {
@@ -29,18 +31,21 @@ h5 {
   margin: 7px;
 }
 
-#submitButton, #resetButton, #enableButton, #searchTag {
+#submitButton,
+#resetButton,
+#enableButton,
+#gifTag {
   background-color: transparent;
   font-family: "Comic Sans MS", cursive, sans-serif;
   font-size: 25px;
   color: white;
-  text-shadow: -2px -2px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
+  text-shadow: -2px -2px 0 black, 1px -1px 0 black, -1px 1px 0 black,
+    1px 1px 0 black;
   border-style: solid;
   border-color: black;
   border-width: 1px;
   border-radius: 4px;
   margin: 3px;
-  width: 20%;
   height: 5%;
 }
 
@@ -48,14 +53,14 @@ h5 {
   padding: 7px;
 }
 
-#searchTag {
+#gifTag {
   margin: 0px;
   padding: 0px;
   text-align: center;
   text-transform: lowercase;
 }
 
-#searchTag::placeholder {
+#gifTag::placeholder {
   color: white;
 }
 
@@ -63,10 +68,16 @@ h5 {
   font-size: 15px;
 }
 
+input[type="submit"]:hover {
+  cursor: pointer;
+  transform: scale(1.01);
+}
+
 @media only screen and (max-width: 600px) {
   body {
     font-size: 10px;
-    text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
+    text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black,
+      1px 1px 0 black;
   }
   h1 {
     text-align: left;
@@ -81,16 +92,68 @@ h5 {
     display: block;
     text-align: left;
   }
-  #buttons, #texts {
+  #buttons,
+  #texts {
     text-align: center;
   }
-  #submitButton, #resetButton, #enableButton, #searchTag {
-    text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
+  #submitButton,
+  #resetButton,
+  #enableButton,
+  #gifTag {
+    text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black,
+      1px 1px 0 black;
     font-size: 10px;
     width: 65%;
     height: 2.5%;
-  }
-  #searchTag {
     font-size: 15px;
   }
+  .github-button {
+    display: none;
+  }
+}
+
+#footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+  color: white;
+  text-align: center;
+  font-family: "Roboto", sans-serif;
+  text-shadow: none;
+}
+#footer-copy {
+  color: white;
+  display: block;
+  font-size: 0.7em;
+  text-decoration: none;
+  width: auto;
+}
+
+#footer-copy:hover {
+  opacity: 0.8;
+}
+
+.github-button {
+  text-decoration: none;
+  color: black;
+  background-color: #d1d1d1;
+  padding: 7px;
+  border-radius: 1px;
+  transition: background 0.2s ease;
+  font-size: 0.7em;
+}
+.github-button:hover {
+  background-color: #b0b0b0;
+  transition: background 0.2s ease;
+}
+.github-logo {
+  content: url("https://image.flaticon.com/icons/svg/25/25231.svg");
+  width: 20px;
+  margin-top: -3px;
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  padding-right: 5px;
 }

@@ -1,272 +1,162 @@
- var defaultFontStatus = true;
- var defaultFontColorStatus = true;
- var defaultSpinStatus = true;
- var defaultGifStatus = true;
- var defaultBackgroundStatus = true;
- var defaultSearchTag = "nyan+cat";
- var defaultState = true;
- var defaultStartup = true;
- var counter = 0;
+let defaults = {
+  fontEnabled: true,
+  fontColorEnabled: true,
+  spinEnabled: true,
+  gifEnabled: true,
+  backgroundEnabled: true,
+  gifTag: "nyan+cat",
+  enabled: true
+};
 
- $(function() {
-   chrome.storage.sync.get('startup', function(data) {
-     if (data.startup == undefined) {
-       chrome.storage.sync.set({
-         'startup': defaultStartup
-       });
-       setDefaults();
-     } else {
-       chrome.storage.sync.set({
-         'startup': false
-       });
-     }
-   });
+$(function() {
+  setInterval(function() {
+    document.querySelector("body").style.background = randomColor();
+  }, 1000);
+  $("#footer-copy").html(`&copy; Noah Richardson ${new Date().getFullYear()}`);
+  chrome.storage.sync.get("startup", function(data) {
+    if (data.startup == undefined) {
+      chrome.storage.sync.set({
+        startup: true
+      });
+      chrome.storage.sync.set(defaults);
+      alert(
+        "WARNING: This extension may potentially trigger seizures for people with photosensitive epilepsy. User discretion is advised."
+      );
+    } else {
+      chrome.storage.sync.set({
+        startup: false
+      });
+    }
+  });
 
-   chrome.storage.sync.get(['fontStatus', 'fontColorStatus', 'spinStatus', 'gifStatus', 'backgroundStatus', 'searchTag', 'state'], function(status) {
-     if (status.state == true || status.state == undefined) {
-       $('#enableButton').val('Disable');
-     } else {
-       $('#enableButton').val('Enable');
-     }
-     $('#font').prop("checked", status.fontStatus);
-     $('#fontColor').prop("checked", status.fontColorStatus);
-     $('#spin').prop("checked", status.spinStatus);
-     $('#gif').prop("checked", status.gifStatus);
-     if (status.backgroundStatus == undefined) {
-       $('#background').prop("checked", defaultBackgroundStatus);
-     } else {
-       $('#background').prop("checked", status.backgroundStatus);
-     }
-     if (status.searchTag == undefined) {
-       $('#searchTag').val(defaultSearchTag.replace("+", " "));
-     } else {
-       $('#searchTag').val(status.searchTag.replace("+", " "));
-     }
-   });
+  let loadSettings = () => {
+    chrome.storage.sync.get(
+      [
+        "fontEnabled",
+        "fontColorEnabled",
+        "spinEnabled",
+        "gifEnabled",
+        "backgroundEnabled",
+        "gifTag",
+        "enabled"
+      ],
+      options => {
+        if (options.enabled == true || options.enabled == undefined) {
+          $("#enableButton").val("Disable");
+        } else {
+          $("#enableButton").val("Enable");
+        }
+        $("#font").prop("checked", options.fontEnabled);
+        $("#fontColor").prop("checked", options.fontColorEnabled);
+        $("#spin").prop("checked", options.spinEnabled);
+        $("#gif").prop("checked", options.gifEnabled);
+        $("#background").prop("checked", options.backgroundEnabled);
+        if (options.gifTag == undefined) {
+          $("#gifTag").val(defaults.gifTag.replace("+", " "));
+        } else {
+          $("#gifTag").val(options.gifTag.replace("+", " "));
+        }
+      }
+    );
+  };
 
-   $('#submitButton').click(function() {
-     chrome.storage.sync.get('state', function(status) {
-       if (status.state == true) {
-         $('#submitStatus').text('Working...');
+  let reloadPage = () => {
+    chrome.tabs.query(
+      {
+        highlighted: true,
+        currentWindow: true
+      },
+      function(tabs) {
+        if (!tabs[0].url.includes("chrome-extension://")) {
+          chrome.tabs.reload(tabs[0].id);
+        }
+      }
+    );
+  };
 
-         var fontStatus = $('#font').prop("checked");
-         var fontColorStatus = $('#fontColor').prop("checked");
-         var spinStatus = $('#spin').prop("checked");
-         var gifStatus = $('#gif').prop("checked");
-         var backgroundStatus = $('#background').prop("checked");
-         var searchTag = $('#searchTag').val().replace(" ", "+");
+  loadSettings();
 
-         if (fontStatus == undefined) {
-           chrome.storage.sync.set({
-             'fontStatus': defaultFontStatus
-           });
-         } else {
-           chrome.storage.sync.set({
-             'fontStatus': fontStatus
-           });
-         }
+  $("#font").on("change", e => {
+    chrome.storage.sync.set({ fontEnabled: e.target.checked });
+    $("#submitStatus").text(
+      `Fonts ${e.target.checked ? "enabled!" : "disabled"}`
+    );
+    if ($("#enableButton").val() === "Disable") reloadPage();
+  });
+  $("#fontColor").on("change", e => {
+    chrome.storage.sync.set({ fontColorEnabled: e.target.checked });
+    $("#submitStatus").text(
+      `Font colors ${e.target.checked ? "enabled!" : "disabled"}`
+    );
+    if ($("#enableButton").val() === "Disable") reloadPage();
+  });
+  $("#spin").on("change", e => {
+    chrome.storage.sync.set({ spinEnabled: e.target.checked });
+    $("#submitStatus").text(
+      `Spinning ${e.target.checked ? "enabled!" : "disabled"}`
+    );
+    if ($("#enableButton").val() === "Disable") reloadPage();
+  });
+  $("#gif").on("change", e => {
+    chrome.storage.sync.set({ gifEnabled: e.target.checked });
+    $("#submitStatus").text(
+      `Gifs ${e.target.checked ? "enabled!" : "disabled"}`
+    );
+    if ($("#enableButton").val() === "Disable") reloadPage();
+  });
+  $("#background").on("change", e => {
+    chrome.storage.sync.set({
+      backgroundEnabled: e.target.checked
+    });
+    $("#submitStatus").text(
+      `Background colors ${e.target.checked ? "enabled!" : "disabled"}`
+    );
+    if ($("#enableButton").val() === "Disable") reloadPage();
+  });
+  $("#gifTag").on("change", e => {
+    chrome.storage.sync.set({
+      gifTag: e.target.value.replace(" ", "+")
+    });
+    $("#submitStatus").text(`${e.target.value} gifs enabled!`);
+    if ($("#enableButton").val() === "Disable") reloadPage();
+  });
 
-         if (fontColorStatus == undefined) {
-           chrome.storage.sync.set({
-             'fontColorStatus': defaultFontColorStatus
-           });
-         } else {
-           chrome.storage.sync.set({
-             'fontColorStatus': fontColorStatus
-           });
-         }
+  $("#resetButton").click(function() {
+    chrome.storage.sync.set(defaults);
+    loadSettings();
+    $("#submitStatus").text(`Default settings restored!`);
+    if ($("#enableButton").val() === "Disable") reloadPage();
+  });
 
-         if(spinStatus == undefined) {
-           chrome.storage.sync.set({
-             'spinStatus': defaultsSpinStatus
-           });
-         }else {
-           chrome.storage.sync.set({
-             'spinStatus': spinStatus
-           });
-         }
+  $("#enableButton").click(function() {
+    chrome.storage.sync.get("enabled", function({ enabled }) {
+      if (enabled === true) {
+        chrome.storage.sync.set({
+          enabled: !enabled
+        });
 
-         if (gifStatus == undefined) {
-           chrome.storage.sync.set({
-             'gifStatus': defaultGifStatus
-           });
-         } else {
-           chrome.storage.sync.set({
-             'gifStatus': gifStatus
-           });
-         }
+        $("#enableButton").val("Enable");
+        $("#submitStatus").text("Disabled :(");
+        reloadPage();
+      } else {
+        chrome.storage.sync.set({
+          fontEnabled: $("#font").prop("checked"),
+          fontColorEnabled: $("#fontColor").prop("checked"),
+          spinEnabled: $("#spin").prop("checked"),
+          gifEnabled: $("#gif").prop("checked"),
+          backgroundEnabled: $("#background").prop("checked"),
+          gifTag: $("#searchTag").val(),
+          enabled: !enabled
+        });
 
-         if (searchTag == undefined) {
-           chrome.storage.sync.set({
-             'searchTag': defaultSearchTag
-           });
-         } else {
-           chrome.storage.sync.set({
-             'searchTag': searchTag
-           });
-         }
+        $("#enableButton").val("Disable");
+        $("#submitStatus").text("Enabled!");
+        reloadPage();
+      }
+    });
+  });
+});
 
-         if (backgroundStatus == undefined) {
-           chrome.storage.sync.set({
-             'backgroundStatus': defaultBackgroundStatus
-           });
-         } else {
-           chrome.storage.sync.set({
-             'backgroundStatus': backgroundStatus
-           });
-         }
-
-         $('#submitStatus').text('Changes saved!');
-         chrome.tabs.query({
-           "highlighted": true,
-           "currentWindow": true
-         }, function(tabs) {
-           if (!tabs[0].url.includes("chrome-extension://")) {
-             chrome.tabs.reload(tabs[0].id);
-           }
-         });
-       } else {
-         $('#submitStatus').text('Enable to change settings!');
-       }
-     });
-   });
-
-   $('#resetButton').click(function() {
-     chrome.storage.sync.get('state', function(status) {
-       if (status.state == true) {
-         $('#submitStatus').text('Working...');
-
-         chrome.storage.sync.set({
-           'fontStatus': defaultFontStatus
-         });
-         chrome.storage.sync.set({
-           'fontColorStatus': defaultFontColorStatus
-         });
-         chrome.storage.sync.set({
-           'spinStatus': defaultSpinStatus
-         });
-         chrome.storage.sync.set({
-           'gifStatus': defaultGifStatus
-         });
-         chrome.storage.sync.set({
-           'backgroundStatus': defaultBackgroundStatus
-         });
-         chrome.storage.sync.set({
-           'searchTag': defaultSearchTag
-         });
-
-         chrome.storage.sync.get(['fontStatus', 'fontColorStatus', 'spinStatus', 'gifStatus', 'searchTag', 'backgroundStatus'], function(status) {
-           $('#font').prop("checked", status.fontStatus);
-           $('#fontColor').prop("checked", status.fontColorStatus);
-           $('#gif').prop("checked", status.gifStatus);
-           $('#spin').prop("checked", status.spinStatus);
-           $('#background').prop("checked", status.backgroundStatus);
-           $('#searchTag').val(status.searchTag.replace("+", " "));
-         });
-
-         $('#submitStatus').text('Changes saved!');
-         chrome.tabs.query({
-           "highlighted": true,
-           "currentWindow": true
-         }, function(tabs) {
-           if (!tabs[0].url.includes("chrome-extension://")) {
-             chrome.tabs.reload(tabs[0].id);
-           }
-         });
-       } else {
-         $('#submitStatus').text('Enable to change settings!');
-       }
-     });
-   });
-
-   $('#enableButton').click(function() {
-     chrome.storage.sync.get('state', function(state) {
-       $('#submitStatus').text('Working...');
-       if (state.state == true) {
-         chrome.storage.sync.set({
-           'state': !defaultState
-         });
-
-         $('#font').prop("disabled", true);
-         $('#fontColor').prop("disabled", true);
-         $('#gif').prop("disabled", true);
-         $('#spin').prop("disabled", true);
-         $('#background').prop("disabled", true);
-         $('#searchTag').prop("disabled", true);
-         $('#searchTag').css("opacity", "0.5");
-         $('#enableButton').val('Enable');
-         $('#submitStatus').text('Disabled :(');
-         chrome.tabs.query({
-           "highlighted": true,
-           "currentWindow": true
-         }, function(tabs) {
-           if (!tabs[0].url.includes("chrome-extension://")) {
-             chrome.tabs.reload(tabs[0].id);
-           }
-         });
-       } else {
-         chrome.storage.sync.set({
-           'fontStatus': $('#font').prop("checked")
-         });
-         chrome.storage.sync.set({
-           'fontColorStatus': $('#fontColor').prop("checked")
-         });
-         chrome.storage.sync.set({
-           'gifStatus': $('#gif').prop("checked")
-         });
-         chrome.storage.sync.set({
-           'backgroundStatus': $('#background').prop("checked")
-         });
-         chrome.storage.sync.set({
-           'searchTag': $('#searchTag').val()
-         });
-
-         chrome.storage.sync.set({
-           'state': defaultState
-         });
-
-         $('#font').prop("disabled", false);
-         $('#fontColor').prop("disabled", false);
-         $('#gif').prop("disabled", false);
-         $('#spin').prop("disabled", false);
-         $('#background').prop("disabled", false);
-         $('#searchTag').prop("disabled", false);
-         $('#searchTag').css("opacity", "1");
-         $('#enableButton').val('Disable');
-         $('#submitStatus').text('Enabled!');
-         chrome.tabs.query({
-           "highlighted": true,
-           "currentWindow": true
-         }, function(tabs) {
-           if (!tabs[0].url.includes("chrome-extension://")) {
-             chrome.tabs.reload(tabs[0].id);
-           }
-         });
-       }
-     });
-   });
- });
-
- function setDefaults() {
-   chrome.storage.sync.set({
-     'fontStatus': defaultFontStatus
-   });
-   chrome.storage.sync.set({
-     'fontColorStatus': defaultFontColorStatus
-   });
-   chrome.storage.sync.set({
-     'gifStatus': defaultGifStatus
-   });
-   chrome.storage.sync.set({
-     'spinStatus': defaultSpinStatus
-   });
-   chrome.storage.sync.set({
-     'backgroundStatus': defaultBackgroundStatus
-   });
-   chrome.storage.sync.set({
-     'searchTag': defaultSearchTag
-   });
-   chrome.storage.sync.set({
-     'state': defaultState
-   });
- }
+function randomColor() {
+  return "#" + Math.floor(Math.random() * 16777215).toString(16); // Generate random color code
+}

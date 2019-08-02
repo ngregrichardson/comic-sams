@@ -15,19 +15,25 @@
     <input type="checkbox" name="gif" id="gif" value="gifStatus" checked>Replace Images with Gifs</input><br>
     <input type="checkbox" name="background" id="background" value="backgroundStatus" checked>Replace Background Color</input><br>
     <div class="container" id="texts">
-      <h5>Gif Search Term</h5>
-      <input type="text" name="searchTag" id="searchTag" value="Nyan Cat"></input>
+      <h5>Gif Search Tag</h5>
+      <input type="text" name="gifTag" id="gifTag" value="Nyan Cat"></input>
     </div>
   </div>
   <div class="container" id="buttons">
-    <input type="submit" id="submitButton" value="Save Changes"></input><br>
-    <input type="submit" id="resetButton" value="Reset Default"></input><br>
-    <input type="submit" id="enableButton" value=""></input>
+    <input type="submit" id="enableButton" value="Disable"></input><br>
+    <input type="submit" id="resetButton" value="Restore Defaults"></input>
     <p id="submitStatus"></p>
+  </div>
+  <div id="footer">
+    <div>
+      <a class="github-button" href="https://github.com/ngregrichardson" target="_blank"
+        aria-label="Follow @ngregrichardson on GitHub"><i class="github-logo"></i>Follow @ngregrichardson</a>
+    </div>
+    <br />
+    <a id="footer-copy" href="https://nrdesign.xyz" target="_blank">&copy; Noah Richardson</a>
   </div>
   <script type="text/javascript" src="jquery-3.3.1.min.js"></script>
   <script type="text/javascript" src="options.js"></script>
-  <script type="text/javascript" src="styles.js"></script>
 </body>
 
 </html>
