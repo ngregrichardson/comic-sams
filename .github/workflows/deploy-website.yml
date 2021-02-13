@@ -1,0 +1,16 @@
+name: Deploy Website
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - 'website/**'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: [self-hosted, primary]
+    timeout-minutes: 5
+
+    steps:
+      - uses: actions/checkout@v2
