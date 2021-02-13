@@ -1,0 +1,196 @@
+html, body {
+    margin: 0;
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.background {
+    position: fixed;
+    z-index: -1;
+    background: url("./images/background.jpg") no-repeat;
+    background-size: cover;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+nav {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    background: #fff;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 15px;
+}
+
+.brand {
+    font-size: 2em;
+    padding: 0 10px;
+    margin: 0;
+    text-decoration: none;
+    background-image: -webkit-gradient(
+            linear,
+            left top,
+            right top,
+            color-stop(0, #f22),
+            color-stop(0.15, #f2f),
+            color-stop(0.3, #22f),
+            color-stop(0.45, #2ff),
+            color-stop(0.6, #2f2),
+            color-stop(0.75, #2f2),
+            color-stop(0.9, #ff2),
+            color-stop(1, #f22)
+    );
+    color: transparent;
+    -webkit-background-clip: text;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
+    transition: background-position 0.3s ease;
+}
+
+.download:hover {
+    background-position: 30px;
+    transition: background-position 0.3s ease;
+}
+
+.header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 100px 0;
+}
+
+.header-image {
+    width: 15%;
+}
+
+.content {
+    display: flex;
+    background: #fff;
+    flex-direction: column;
+    flex: 1;
+    width: 60%;
+    padding: 30px 50px;
+    border-radius: 15px;
+    align-self: center;
+}
+
+.title {
+    text-align: center;
+    font-size: 4em;
+    margin: 0 0 20px;
+    background-image: -webkit-gradient(
+            linear,
+            left top,
+            right top,
+            color-stop(0, #f22),
+            color-stop(0.15, #f2f),
+            color-stop(0.3, #22f),
+            color-stop(0.45, #2ff),
+            color-stop(0.6, #2f2),
+            color-stop(0.75, #2f2),
+            color-stop(0.9, #ff2),
+            color-stop(1, #f22)
+    );
+    color: transparent;
+    -webkit-background-clip: text;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
+}
+
+.subtitle {
+    font-size: 2em;
+}
+
+.paragraph {
+    font-size: 1.5em;
+}
+
+footer {
+    max-width: 100%;
+    display: flex;
+    padding: 30px;
+    align-items: center;
+    justify-content: center;
+}
+
+#footer-copy {
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+    text-align: center;
+}
+
+#footer-copy:hover {
+    opacity: 0.8;
+}
+
+@media screen and (min-width: 0px) and (max-width: 512px) {
+    .header-image {
+        width: 50% !important;
+    }
+
+    .brand {
+        font-size: 2em;
+    }
+
+    .title {
+        font-size: 2.5em;
+        padding: 0 15px;
+    }
+
+    .content {
+        width: 100%;
+        border-radius: 0;
+        padding: 15px 0;
+    }
+
+    .subtitle {
+        text-align: center;
+        padding: 0 15px;
+    }
+
+    .paragraph {
+        font-size: 1.5em;
+        text-align: center;
+        padding: 0 15px;
+    }
+
+    #footer-copy {
+        font-size: 30px;
+    }
+}
+
+@media screen and (min-width: 513px) and (max-width: 1024px) {
+    .header-image {
+        width: 30%;
+    }
+
+    .brand {
+        font-size: 3em;
+    }
+
+    .nav-list {
+        text-align: center;
+        font-size: 1.5em;
+    }
+
+    .content {
+        width: 80%;
+        padding: 15px 30px;
+    }
+
+    .subtitle {
+        text-align: center;
+    }
+
+    #footer-copy {
+        font-size: 30px;
+    }
+}
