@@ -104,6 +104,10 @@ nav {
     -webkit-text-stroke-color: black;
 }
 
+#description {
+    text-align: center;
+}
+
 .subtitle {
     font-size: 2em;
 }
